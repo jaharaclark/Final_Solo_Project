@@ -1,23 +1,11 @@
-# File.open(ARGV[0]).each do |line|
-#     puts line
-# end
-
 message = File.open("#{ARGV[0]}")
-braille = File.open("#{ARGV[1]}")
+braille = File.open("#{ARGV[1]}", 'w')
 
 while line = message.gets do
     braille.write line
 end
   
-  puts "Created #{braille}.txt containing 256 characters"
+  characters = File.read("#{ARGV[0]}")
+  count = characters.delete("\n")
+  puts "Created #{ARGV[1]} containing #{count.length} characters"
 message.close
-
-# ruby foo.rb test_list.txt
-
-# File.open("#{ARGV[1]}", 'w') do |braille|
-
-#     braille.puts "Ruby"
-#     braille.write "Java\n"
-#     braille << "Python\n"
-
-# end
