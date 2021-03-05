@@ -7,7 +7,7 @@ class NightWriterTest < Minitest::Test
     @night_writer = NightWriter.new
   end
 
-  def test_it_exists_and_has_attributes
+  def test_it_exists
     assert_instance_of NightWriter, @night_writer
   end
 end
