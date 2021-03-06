@@ -1,7 +1,7 @@
 class NightWriter
-  attr_reader :cipher, :message, :output
+  attr_reader :cipher, :message, :output, :rendered
 
-  def initialize(cipher)
+  def initialize
     @cipher = {      
       "a" => ["0.", "..", ".."],
       "b" => ["0.", "0.", ".."],
@@ -31,7 +31,6 @@ class NightWriter
       "z" => ["0.", ".0", "00"],
       " " => ["..", "..", ".."]
     }
-    @message = File.open("#{ARGV[0]}")
     @output = []
   end
   # braille = File.open("#{ARGV[1]}", 'w')
@@ -39,35 +38,56 @@ class NightWriter
   # while line = message.gets do
   #     braille.write line
   # end
-  characters = File.read("#{ARGV[0]}")
-  count = characters.delete("\n")
+  # characters = File.read("#{ARGV[0]}")
+  # count = characters.delete("\n")
   
-  puts characters[0...4]
-  puts "Created #{ARGV[1]} containing #{count.length} characters"
-  message.close
-
+  # puts characters[0...4]
+  # puts "Created #{ARGV[1]} containing #{count.length} characters"
+  # message.close
+  
+  def perform
+    read_message
+    translate_message
+    write_message
+    # insert_line_breaks
+  end
   def read_message
+    @message = File.open("#{ARGV[0]}").read
+  end
+  
+  
+  def translate_message
     split_message = @message.split("")
-
-    split_message.each do |letter|
+  
+     split_message.each do |letter|
       @output << @cipher[letter]
     end
-    translate_message
-  end
-
-
-  def translate_message
+    @output
     # transposed = @output.transpose
 
-    if @output.length > 39
-    write_message
+    # if @output.length > 40
+    #   insert_line_breaks
+    # end
   end
 
   def write_message
     braille = File.open("#{ARGV[1]}", "w")
-    NAME_HERE .each do |element|
+    @output.each do |element|
       element.join("")
       braille.write element
       braille.write "\n"
+    end
+  end
+
+  def insert_line_breaks
+    @rendered = @output.each_with_index do |char, index|
+      if index % 40 == 0
+        "\n"
+      end
+    end
+    @rendered
   end
 end
+
+runner = NightWriter.new
+runner.perform
