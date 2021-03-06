@@ -1,5 +1,5 @@
 class NightWriter
-  attr_reader :cipher, :message, :output, :rendered
+  attr_reader :cipher, :message, :output, :rendered, :transposed
 
   def initialize
     @cipher = {      
@@ -63,7 +63,7 @@ class NightWriter
       @output << @cipher[letter]
     end
     @output
-    # transposed = @output.transpose
+    @transposed = @output.transpose
 
     # if @output.length > 40
     #   insert_line_breaks
@@ -72,9 +72,10 @@ class NightWriter
 
   def write_message
     braille = File.open("#{ARGV[1]}", "w")
-    @output.each do |element|
-      element.join("")
-      braille.write element
+    # x = ""
+    @transposed.each do |element|
+      joined = element.join("")
+      braille.write joined
       braille.write "\n"
     end
   end
