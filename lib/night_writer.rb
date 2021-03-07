@@ -99,10 +99,11 @@ class NightWriter
   def perform
     read_message
     translate_message
+    insert_line_breaks
     write_message
     confirmation
-    # insert_line_breaks
   end
+
   def read_message
     @message = File.open("#{ARGV[0]}").read
   end
@@ -125,20 +126,11 @@ class NightWriter
 
   def write_message
     braille = File.open("#{ARGV[1]}", "w")
-    @transposed.each do |element|
-      joined = element.join("")
-      braille.write joined
-      braille.write "\n"
-    end
+    braille.write @transposed
   end
 
   def insert_line_breaks
-    @rendered = @output.each_with_index do |char, index|
-      if index % 40 == 0
-        "\n"
-      end
-    end
-    @rendered
+    @transposed = @transposed.flatten.join("").scan(/.{1,80}/).join("\n")
   end
 
   def confirmation
