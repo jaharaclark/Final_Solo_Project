@@ -95,22 +95,12 @@ class NightWriter
     }
     @output = []
   end
-  # braille = File.open("#{ARGV[1]}", 'w')
-  
-  # while line = message.gets do
-  #     braille.write line
-  # end
-  # characters = File.read("#{ARGV[0]}")
-  # count = characters.delete("\n")
-  
-  # puts characters[0...4]
-  # puts "Created #{ARGV[1]} containing #{count.length} characters"
-  # message.close
   
   def perform
     read_message
     translate_message
     write_message
+    confirmation
     # insert_line_breaks
   end
   def read_message
@@ -119,8 +109,8 @@ class NightWriter
   
   
   def translate_message
-    require 'pry'; binding.pry
     split_message = @message.split("")
+    split_message.delete("\n")
   
      split_message.each do |letter|
       @output << @cipher[letter]
@@ -135,7 +125,6 @@ class NightWriter
 
   def write_message
     braille = File.open("#{ARGV[1]}", "w")
-    # x = ""
     @transposed.each do |element|
       joined = element.join("")
       braille.write joined
@@ -150,6 +139,10 @@ class NightWriter
       end
     end
     @rendered
+  end
+
+  def confirmation
+    puts "Created '#{ARGV[1]}' containing #{@message.length} characters"
   end
 end
 
