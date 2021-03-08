@@ -35,7 +35,9 @@ class NightWriterTest < Minitest::Test
     assert_equal false, braille.read.empty?
   end
 
-  
+  def test_confirmation
+    assert_nil @night_writer.confirmation
+  end
 
 end
 
