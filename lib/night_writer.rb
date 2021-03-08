@@ -66,7 +66,7 @@ class NightWriter
       "7" => ["..","00","00"],
       "8" => ["..","0.","00"],
       "9" => ["..",".0","0."],
-      "0" => ["..",".0","00"],
+      "0" => ["..",".0","00"]
     }
     @output = []
   end
@@ -74,9 +74,9 @@ class NightWriter
   def perform
     read_message
     translate_message
-    # insert_line_breaks
-    x = write_message
-    require 'pry'; binding.pry
+    insert_line_breaks
+    write_message
+    # require 'pry'; binding.pry
     confirmation
   end
   def read_message
@@ -85,13 +85,20 @@ class NightWriter
   
   
   def translate_message
-    split_message = @message.split("")
+    split_message = @message.downcase.split("")
+    require 'pry'; binding.pry
     split_message.delete("\n")
+
+    break_indicies = []
+     split_message.first.each_with_index do |char, index|
+         break_indicies << index if index % 39 == 0 && index != 0
+     end
   
      split_message.each do |letter|
       @output << @cipher[letter]
     end
     @output
+    # require 'pry'; binding.pry
     @transposed = @output.transpose
 
     # if @output.length > 40
@@ -101,9 +108,10 @@ class NightWriter
 
   def write_message
     braille = File.open("#{ARGV[1]}", "w")
+    # braille.write @transposed.join("")
     @transposed.each do |element|
       joined = element.join("")
-      braille.write element
+      braille.write joined
       braille.write "\n"
     end
   end
@@ -123,10 +131,20 @@ class NightWriter
     # @transposed.each {|element| x << element.join("").scan(/.{1,80}/)}
     # @transposed = x.flatten
     # require 'pry'; binding.pry
+
+    
+
+    @transposed.map do |row|
+        break_indicies.reverse.map do |index|
+        row.insert(index+1, "!!!!!!!!!!!!!!!")
+      end
+    end
+
+    @transposed 
   end
 
   def confirmation
-    puts "Created '#{ARGV[1]}' containing #{@message.length} characters"
+    p "Created '#{ARGV[1]}' containing #{@message.length} characters"
   end
 end
 
