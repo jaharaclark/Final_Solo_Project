@@ -7,22 +7,18 @@ class NightWriter
     @cipher = dictionary
     @print_output = ""
     @braille_result = ["", "", ""]
+    @message = File.open("#{ARGV[0]}").read.delete("\n")
   end
 
   def perform
-    read_message
     translate
     write_message
     confirmation
   end
 
-  def read_message
-    @message = File.open("#{ARGV[0]}").read.delete("\n")
-  end
-
   def translate
-    @message = @message.gsub("\n", " ")
-    @message.each_char do |letter|
+    @message = message.gsub("\n", " ")
+    message.each_char do |letter|
        if letter =~ /[A-Z]/
          make_capital(letter)
        else
@@ -55,6 +51,7 @@ class NightWriter
     @braille_result[0] = @braille_result[0] + braille_letter[0]
     @braille_result[1] = @braille_result[1] + braille_letter[1]
     @braille_result[2] = @braille_result[2] + braille_letter[2]
+    @braille_result
   end
 
   def write_message
@@ -66,5 +63,6 @@ class NightWriter
     puts "Created '#{ARGV[1]}' containing #{@message.length} characters"
   end
 end
+
 runner = NightWriter.new
 runner.perform
