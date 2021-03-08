@@ -9,7 +9,6 @@ class NightWriterTest < Minitest::Test
     @night_writer = NightWriter.new
     @night_writer.stubs(:message).returns("hello world")
     @night_writer.stubs(:braille).returns("hello world")
-    
   end
 
   def test_it_exists

@@ -20,7 +20,8 @@ class NightReaderTest < Minitest::Test
   end
 
   def test_it_can_create_letter_array
-    assert_equal [["0", ".", "0", "0", ".", "."],
+ expected =   
+ [["0", ".", "0", "0", ".", "."],
  ["0", ".", ".", "0", ".", "."],
  ["0", ".", "0", ".", "0", "."],
  ["0", ".", "0", ".", "0", "."],
@@ -30,10 +31,20 @@ class NightReaderTest < Minitest::Test
  ["0", ".", ".", "0", "0", "."],
  ["0", ".", "0", "0", "0", "."],
  ["0", ".", "0", ".", "0", "."],
- ["0", "0", ".", "0", ".", "."]], @night_reader.create_letter_array
+ ["0", "0", ".", "0", ".", "."]]
+ assert_equal expected, @night_reader.create_letter_array
   end
-    # create_letter_array
-    # generate_output
-    # write_message
-    # confirmation
+  
+  def test_generate_output
+    assert_equal "hello world", @night_reader.generate_output
+  end
+  
+  def test_it_can_write_message
+    message = File.open("#{ARGV[1]}", "r")
+    assert_equal false, message.read.empty?
+  end
+
+  def test_confirmation
+    assert_nil @night_reader.confirmation
+  end
 end
