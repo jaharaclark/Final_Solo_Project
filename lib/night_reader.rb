@@ -77,15 +77,7 @@ class NightReader
   def confirmation
     puts "Created '#{ARGV[1]}' containing #{@finished.length} characters"
   end
-  #   @letters_to_be.each_with_index do |letters_to_be, index|
-  #     if letters_to_be == ".....0"
-  #       #will need to unshift or remove capital braille character
-  #       add_uppercase(letters_to_be)
-  #       #grab the character one index after this one
-  #       # dictionary.invert[whatever letters to be was] shovel that into some kind results array
-  #     else
-  #       add_lowercase(letters_to_be)
-  #     end
+ 
 end
 
 runner = NightReader.new
