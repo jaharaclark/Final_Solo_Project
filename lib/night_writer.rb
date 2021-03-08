@@ -1,73 +1,11 @@
+require './lib/dictionary'
 class NightWriter
+  include Dictionary 
+
   attr_reader :cipher, :message, :output, :rendered, :transposed
 
   def initialize
-    @cipher = {      
-      "a" => ["0.", "..", ".."],
-      "b" => ["0.", "0.", ".."],
-      "c" => ["00", "..", ".."],
-      "d" => ["00", ".0", ".."],
-      "e" => ["0.", ".0", ".."],
-      "f" => ["00", "0.", ".."],
-      "g" => ["00", "00", ".."],
-      "h" => ["0.", "00", ".."],
-      "i" => [".0", "0.", ".."],
-      "j" => [".0", "00", ".."],
-      "k" => ["0.", "..", "0."],
-      "l" => ["0.", "0.", "0."],
-      "m" => ["00", "..", "0."],
-      "n" => ["00", ".0", "0."],
-      "o" => ["0.", ".0", "0."],
-      "p" => ["00", "0.", "0."],
-      "q" => ["00", "00", "0."],
-      "r" => ["0.", "00", "0."],
-      "s" => [".0", "0.", "0."],
-      "t" => [".0", "00", "0."],
-      "u" => ["0.", "..", "00"],
-      "v" => ["0.", "0.", "00"],
-      "w" => [".0", "00", ".0"],
-      "x" => ["00", "..", "00"],
-      "y" => ["00", ".0", "00"],
-      "z" => ["0.", ".0", "00"],
-      " " => ["..", "..", ".."],
-      "capitalize" => ["..", "..", ".0"],
-      "!" => [".0", "0.", "00"],
-      "." => [".0","..",".0"],
-      "," => ["..","..",".0"],
-      ";" => ["..",".0",".0"],
-      "?" => ["00",".0",".0"],
-      "(" => ["0.","00","00"],
-      ")" => ["0.","00","00"],
-      "[" => [".0","0.",".0"],
-      "]" => ["00","00",".0"],
-      '"' => ["..",".0",".."],
-      "_" => [".0",".0",".0"],
-      ":" => ["0.",".0",".0"],
-      "-" => ["..","..","00"],
-      "\'" => ["0.","00",".0"],
-      "/" => [".0","..","0."],
-      "<" => ["0.","0",".0"],
-      ">" => [".0",".0","0."],
-      "@" => [".0","..",".."],
-      "^" => [".0",".0",".."],
-      "&" => ["00","0.","00"],
-      "$" => ["00","0.",".0"],
-      "=" => ["00","00","00"],
-      "*" => ["0.","..",".0"],
-      "%" => ["00","..",".0"],
-      "#" => [".0",".0","00"],
-      "+" => [".0","..","00"],
-      "1" => ["..","0.",".."],
-      "2" => ["..","0.","0."],
-      "3" => ["..","00",".."],
-      "4" => ["..","00",".0"],
-      "5" => ["..","0.",".0"],
-      "6" => ["..","00","0."],
-      "7" => ["..","00","00"],
-      "8" => ["..","0.","00"],
-      "9" => ["..",".0","0."],
-      "0" => ["..",".0","00"]
-    }
+    @cipher = dictionary
     @output = []
   end
   
@@ -76,34 +14,24 @@ class NightWriter
     translate_message
     insert_line_breaks
     write_message
-    # require 'pry'; binding.pry
     confirmation
   end
+  
   def read_message
     @message = File.open("#{ARGV[0]}").read
   end
   
   
   def translate_message
-    split_message = @message.downcase.split("")
-    require 'pry'; binding.pry
-    split_message.delete("\n")
-
-    break_indicies = []
-     split_message.first.each_with_index do |char, index|
-         break_indicies << index if index % 39 == 0 && index != 0
-     end
-  
-     split_message.each do |letter|
-      @output << @cipher[letter]
+    @message = @message.gsub("\n", " ")
+    @message.each_char do |letter|
+       if letter =~ /[A-Z]/ 
+         make_capital(letter)
+       else
+         make_minuscule(letter)
+       end
     end
-    @output
-    # require 'pry'; binding.pry
-    @transposed = @output.transpose
-
-    # if @output.length > 40
-    #   insert_line_breaks
-    # end
+    create_limited_output
   end
 
   def write_message
