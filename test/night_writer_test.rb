@@ -7,8 +7,6 @@ require './test/test_helper'
 class NightWriterTest < Minitest::Test
   def setup
     @night_writer = NightWriter.new
-    @night_writer.stubs(:message).returns("hello world")
-    @night_writer.stubs(:braille).returns("hello world")
   end
 
   def test_it_exists
@@ -32,10 +30,6 @@ class NightWriterTest < Minitest::Test
   def test_it_can_write_message
     braille = File.open("#{ARGV[1]}", "r")
     assert_equal false, braille.read.empty?
-  end
-
-  def test_confirmation
-    assert_nil @night_writer.confirmation
   end
 
 end

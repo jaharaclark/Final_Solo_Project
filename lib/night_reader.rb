@@ -29,7 +29,6 @@ class NightReader
   end
 
   def create_letter_array
-    @symbol_arr
     first_result = []
     second_result = []
     third_result = []
@@ -52,27 +51,6 @@ class NightReader
     @finished = @new_letters.join
     @finished
   end
-
-  # def generate_output
-  #   @letters_to_be.map do |letter|
-  #     @new_letters << @cipher[letter]
-  #     letter.delete("capitalize") if letter == "capitalize"
-  #   end
-  #   correct_format = []
-  #   @new_letters.each_with_index do |letter, index|
-  #     if letter == "capitalize"
-  #       next
-  #       require 'pry'; binding.pry
-  #       letter.upcase!
-  #       letter.delete("capitalize")
-  #     else
-  #       correct_format << letter
-  #     end
-  #   end
-  #   correct_format
-  # end
-
-
 
   def write_message
     message = File.open("#{ARGV[1]}", "w")
