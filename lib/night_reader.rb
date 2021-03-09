@@ -40,16 +40,22 @@ class NightReader
       @letters_to_be[index] = native_braille
     end
     @letters_to_be
-    @letters_to_be
   end
   
   def generate_output
+    x = 0
     @letters_to_be.map do |letter|
       final_letters = letter.join
-      @new_letters << @cipher[final_letters] 
+      if @cipher[final_letters] == "capitalize"
+        x = 1
+      elsif x == 1 
+        @new_letters << @cipher[final_letters].upcase
+        x = 0
+      else
+        @new_letters << @cipher[final_letters] 
+      end
     end
     @finished = @new_letters.join
-    @finished
   end
 
   def write_message

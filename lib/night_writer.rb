@@ -1,7 +1,7 @@
 require './lib/dictionary'
 class NightWriter
   include Dictionary
-  attr_reader :cipher, :message, :print_output, :rendered, :transposed, :braille_result
+  attr_reader :cipher, :message, :print_output, :braille_result
   
   def initialize
     @cipher = dictionary
