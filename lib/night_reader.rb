@@ -29,7 +29,6 @@ class NightReader
   end
 
   def create_letter_array
-    @symbol_arr
     first_result = []
     second_result = []
     third_result = []
@@ -41,38 +40,23 @@ class NightReader
       @letters_to_be[index] = native_braille
     end
     @letters_to_be
-    @letters_to_be
   end
   
   def generate_output
+    x = 0
     @letters_to_be.map do |letter|
       final_letters = letter.join
-      @new_letters << @cipher[final_letters] 
+      if @cipher[final_letters] == "capitalize"
+        x = 1
+      elsif x == 1 
+        @new_letters << @cipher[final_letters].upcase
+        x = 0
+      else
+        @new_letters << @cipher[final_letters] 
+      end
     end
     @finished = @new_letters.join
-    @finished
   end
-
-  # def generate_output
-  #   @letters_to_be.map do |letter|
-  #     @new_letters << @cipher[letter]
-  #     letter.delete("capitalize") if letter == "capitalize"
-  #   end
-  #   correct_format = []
-  #   @new_letters.each_with_index do |letter, index|
-  #     if letter == "capitalize"
-  #       next
-  #       require 'pry'; binding.pry
-  #       letter.upcase!
-  #       letter.delete("capitalize")
-  #     else
-  #       correct_format << letter
-  #     end
-  #   end
-  #   correct_format
-  # end
-
-
 
   def write_message
     message = File.open("#{ARGV[1]}", "w")
